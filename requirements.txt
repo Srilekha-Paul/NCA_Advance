@@ -1,7 +1,31 @@
-torch
-torchvision
+streamlit
 numpy
 matplotlib
-pillow
-streamlit
-scikit-image
+torch
+torchvision
+
+
+
+
+
+
+
+# # requirements.txt
+
+# streamlit
+# torch
+# numpy
+# matplotlib
+# pandas
+
+
+
+
+
+# torch
+# torchvision
+# numpy
+# matplotlib
+# pillow
+# streamlit
+# scikit-image
