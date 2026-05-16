@@ -1,103 +1,135 @@
-# utils.py
-
-import torch
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-# =====================================================
-# CONVERT MODEL OUTPUT TO IMAGE
-# =====================================================
 def tensor_to_image(x):
-    """
-    Input:
-        Tensor shape = [1, C, H, W]
-
-    Output:
-        numpy image (H,W)
-    """
-
-    img = x[0, 3].detach().cpu().numpy()
-
-    img = np.clip(img, 0, 1)
-
-    return img
+    x = x.detach().cpu().numpy()[0, 0]
+    x = np.clip(x, 0, 1)
+    return x
 
 
-# =====================================================
-# SHOW IMAGE
-# =====================================================
-def plot_tensor(x, title="NCA Output"):
+def plot_tensor(img, title="NCA"):
+    fig, ax = plt.subplots(figsize=(10, 7))
 
-    img = tensor_to_image(x)
+    ax.imshow(img, cmap="magma")
 
-    fig, ax = plt.subplots(figsize=(8, 8))
-
-    fig.patch.set_facecolor("#0a0d14")
-    ax.set_facecolor("#0a0d14")
-
-    ax.imshow(img, cmap="viridis", vmin=0, vmax=1)
+    ax.set_xticks([])
+    ax.set_yticks([])
 
     ax.set_title(
         title,
-        color="white",
-        fontsize=16,
-        fontweight="bold"
+        fontsize=24,
+        fontweight="bold",
+        color="white"
     )
 
-    ax.axis("off")
+    fig.patch.set_facecolor('#0b1120')
+    ax.set_facecolor('#0b1120')
 
     return fig
 
 
-# =====================================================
-# DAMAGE ORGANISM
-# =====================================================
-def damage_tensor(x, mode="center"):
 
-    y = x.clone()
+# # utils.py
 
-    _, _, h, w = y.shape
-
-    if mode == "center":
-        y[:, :, h//3:2*h//3, w//3:2*w//3] = 0
-
-    elif mode == "left":
-        y[:, :, :, :w//2] = 0
-
-    elif mode == "right":
-        y[:, :, :, w//2:] = 0
-
-    elif mode == "random":
-        mask = torch.rand_like(y[:, :1]) > 0.7
-        y = y * (~mask)
-
-    return y
+# import torch
+# import numpy as np
+# import matplotlib.pyplot as plt
 
 
-# =====================================================
-# MAKE SEED
-# =====================================================
-def make_seed(size=64, channels=16):
+# # =====================================================
+# # CONVERT MODEL OUTPUT TO IMAGE
+# # =====================================================
+# def tensor_to_image(x):
+#     """
+#     Input:
+#         Tensor shape = [1, C, H, W]
 
-    x = torch.zeros(1, channels, size, size)
+#     Output:
+#         numpy image (H,W)
+#     """
 
-    x[:, 3:, size//2, size//2] = 1.0
+#     img = x[0, 3].detach().cpu().numpy()
 
-    return x
+#     img = np.clip(img, 0, 1)
+
+#     return img
 
 
-# =====================================================
-# SIMILARITY
-# =====================================================
-def calc_accuracy(pred, target):
+# # =====================================================
+# # SHOW IMAGE
+# # =====================================================
+# def plot_tensor(x, title="NCA Output"):
 
-    p = pred[:, 3].detach().cpu().numpy() > 0.5
-    t = target[:, 3].detach().cpu().numpy() > 0.5
+#     img = tensor_to_image(x)
 
-    score = (p == t).mean() * 100
+#     fig, ax = plt.subplots(figsize=(8, 8))
 
-    return score
+#     fig.patch.set_facecolor("#0a0d14")
+#     ax.set_facecolor("#0a0d14")
+
+#     ax.imshow(img, cmap="viridis", vmin=0, vmax=1)
+
+#     ax.set_title(
+#         title,
+#         color="white",
+#         fontsize=16,
+#         fontweight="bold"
+#     )
+
+#     ax.axis("off")
+
+#     return fig
+
+
+# # =====================================================
+# # DAMAGE ORGANISM
+# # =====================================================
+# def damage_tensor(x, mode="center"):
+
+#     y = x.clone()
+
+#     _, _, h, w = y.shape
+
+#     if mode == "center":
+#         y[:, :, h//3:2*h//3, w//3:2*w//3] = 0
+
+#     elif mode == "left":
+#         y[:, :, :, :w//2] = 0
+
+#     elif mode == "right":
+#         y[:, :, :, w//2:] = 0
+
+#     elif mode == "random":
+#         mask = torch.rand_like(y[:, :1]) > 0.7
+#         y = y * (~mask)
+
+#     return y
+
+
+# # =====================================================
+# # MAKE SEED
+# # =====================================================
+# def make_seed(size=64, channels=16):
+
+#     x = torch.zeros(1, channels, size, size)
+
+#     x[:, 3:, size//2, size//2] = 1.0
+
+#     return x
+
+
+# # =====================================================
+# # SIMILARITY
+# # =====================================================
+# def calc_accuracy(pred, target):
+
+#     p = pred[:, 3].detach().cpu().numpy() > 0.5
+#     t = target[:, 3].detach().cpu().numpy() > 0.5
+
+#     score = (p == t).mean() * 100
+
+#     return score
 
 
 

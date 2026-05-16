@@ -1,10 +1,22 @@
-# requirements.txt
-
 streamlit
-torch
 numpy
 matplotlib
-pandas
+torch
+torchvision
+
+
+
+
+
+
+
+# # requirements.txt
+
+# streamlit
+# torch
+# numpy
+# matplotlib
+# pandas
 
 
 
